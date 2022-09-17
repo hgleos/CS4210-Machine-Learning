@@ -3,7 +3,7 @@
 # FILENAME: decision_tree.py
 # SPECIFICATION: This program creates a decision tree for the contact lens data.
 # FOR: CS 4210- Assignment #1
-# TIME SPENT: how long it took you to complete the assignment
+# TIME SPENT: On the coding part approximately 30-60 mins. ID3 hand written algo about 6 hours. The assignment as a whole 8-10 hours.
 #-----------------------------------------------------------*/
 
 #IMPORTANT NOTE: DO NOT USE ANY ADVANCED PYTHON LIBRARY TO COMPLETE THIS CODE SUCH AS numpy OR pandas. You have to work here only with standard
