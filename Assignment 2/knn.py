@@ -1,9 +1,9 @@
 #-------------------------------------------------------------------------
-# AUTHOR: your name
+# AUTHOR: Hugo Leos
 # FILENAME: title of the source file
-# SPECIFICATION: description of the program
+# SPECIFICATION: finding the error rate using 1NN
 # FOR: CS 4210- Assignment #2
-# TIME SPENT: how long it took you to complete the assignment
+# TIME SPENT: 5-6 hours
 #-----------------------------------------------------------*/
 
 #IMPORTANT NOTE: DO NOT USE ANY ADVANCED PYTHON LIBRARY TO COMPLETE THIS CODE SUCH AS numpy OR pandas. You have to work here only with standard
@@ -22,53 +22,54 @@ with open('binary_points.csv', 'r') as csvfile:
       if i > 0: #skipping the header
          db.append (row)
 
-print(db)
+wrongCounter = 0
+
 #loop your data to allow each instance to be your test set
-testIndex = 0
-while testIndex < 10:
+for i, instance in enumerate(db):
+
+    #add the training features to the 2D array X and remove the instance that will be used for testing in this iteration.
+    #For instance, X = [[1, 3], [2, 1,], ...]]. Convert values to float to avoid warning messages
+
+    #transform the original training classes to numbers and add them to the vector Y. Do not forget to remove the instance that will be used for testing in this iteration.
+    #For instance, Y = [1, 2, ,...]. Convert values to float to avoid warning messages
+
+    #--> add your Python code here
+    X = []
+    Y = []
     testInstance = []
-    for i, instance in enumerate(db):
+    testIndex = i
 
-        #add the training features to the 2D array X and remove the instance that will be used for testing in this iteration.
-        #For instance, X = [[1, 3], [2, 1,], ...]]. Convert values to float to avoid warning messages
+    resultConversion = {"-": 0, "+": 1}
 
-        #transform the original training classes to numbers and add them to the vector Y. Do not forget to remove the instance that will be used for testing in this iteration.
-        #For instance, Y = [1, 2, ,...]. Convert values to float to avoid warning messages
-
-        #--> add your Python code here
-        # X =
-        # Y =
-        #testSample =
-        resultConversion = {'-' : 0, '+' : 1}
-
-        if testIndex == i:
-            testInstance = instance
+    for j, data in enumerate(db):
+        if (testIndex == j):
+            testInstance = data
         else:
-            X = [[float(instance[0]), float(instance[1])]]
-            Y = [resultConversion[instance[2]]]
-            print(X)
-            print(Y)
-
-            #fitting the knn to the data
-            clf = KNeighborsClassifier(n_neighbors=1, p=2)
-            clf = clf.fit(X, Y)
-
-            #use your test sample in this iteration to make the class prediction. For instance:
-            #class_predicted = clf.predict([[1, 2]])[0]
-            #--> add your Python code here
-        if i == 9:
-            prediction = clf.predict([[float(testInstance[0]), float(testInstance[1])]])[0]
-            print("Prediction is: ", prediction)
-
-            #compare the prediction with the true label of the test instance to start calculating the error rate.
-            #--> add your Python code here
+            X.append([float(data[0]), float(data[1])])
+            Y.append(resultConversion[data[2]])
     
+    # print(X)
+    # print(Y)
+
+    #fitting the knn to the data
+    clf = KNeighborsClassifier(n_neighbors=1, p=2)
+    clf = clf.fit(X, Y)
+
+    #use your test sample in this iteration to make the class prediction. For instance:
+    #class_predicted = clf.predict([[1, 2]])[0]
+    #--> add your Python code here
+    prediction = clf.predict([[float(testInstance[0]), float(testInstance[1])]])[0]
+    groundTruth = resultConversion[testInstance[2]]
+
+    #compare the prediction with the true label of the test instance to start calculating the error rate.
+    #--> add your Python code here
+    if prediction != groundTruth:
+        wrongCounter += 1
     testIndex += 1
-    print("\n\nNext iteration\n")
 
 #print the error rate
 #--> add your Python code here
-
+print("The error rate is: ", wrongCounter/len(db), " = ", wrongCounter/len(db)*100, "%")
 
 
 
