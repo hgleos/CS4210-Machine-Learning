@@ -1,0 +1,78 @@
+#-------------------------------------------------------------------------
+# AUTHOR: Hugo Leos
+# FILENAME: naive_bayes.py
+# SPECIFICATION: using naive bayes to find the probability of the test set class
+# FOR: CS 4210- Assignment #2
+# TIME SPENT: 1-2 hours
+#-----------------------------------------------------------*/
+
+#IMPORTANT NOTE: DO NOT USE ANY ADVANCED PYTHON LIBRARY TO COMPLETE THIS CODE SUCH AS numpy OR pandas. You have to work here only with standard
+# dictionaries, lists, and arrays
+
+#importing some Python libraries
+import csv
+from imghdr import tests
+from sklearn.naive_bayes import GaussianNB
+
+#reading the training data in a csv file
+#--> add your Python code here
+trainingSet = []
+
+with open("weather_training.csv", 'r') as csvfile:
+    reader = csv.reader(csvfile)
+    for i, row in enumerate(reader):
+        if i > 0:
+            trainingSet.append (row)
+            
+#transform the original training features to numbers and add them to the 4D array X.
+#For instance Sunny = 1, Overcast = 2, Rain = 3, so X = [[3, 1, 1, 2], [1, 3, 2, 2], ...]]
+#--> add your Python code here
+# X =
+X = []
+outlook = {"Sunny": 1, "Overcast": 2, "Rain": 3}
+temp = {"Hot": 1, "Mild": 2, "Cool": 3}
+humidity = {"Normal": 1, "High": 2}
+wind = {"Weak": 1, "Strong": 2}
+
+#transform the original training classes to numbers and add them to the vector Y.
+#For instance Yes = 1, No = 2, so Y = [1, 1, 2, 2, ...]
+#--> add your Python code here
+# Y =
+Y = []
+play = {"Yes": 1, "No": 2}
+
+for data in trainingSet:
+    X.append([outlook[data[1]], temp[data[2]], humidity[data[3]], wind[data[4]]])
+    Y.append(play[data[5]])
+
+#fitting the naive bayes to the data
+clf = GaussianNB()
+clf.fit(X, Y)
+
+#reading the test data in a csv file
+#--> add your Python code here
+testSet = []
+
+with open('weather_test.csv', 'r') as csvfile:
+    reader = csv.reader(csvfile)
+    for i, row in enumerate(reader):
+        if i > 0:
+            testSet.append(row)
+
+#printing the header os the solution
+print ("Day".ljust(15) + "Outlook".ljust(15) + "Temperature".ljust(15) + "Humidity".ljust(15) + "Wind".ljust(15) + "PlayTennis".ljust(15) + "Confidence".ljust(15))
+
+#use your test samples to make probabilistic predictions. For instance: clf.predict_proba([[3, 1, 2, 1]])[0]
+#--> add your Python code here
+for data in testSet:
+    probability = clf.predict_proba([[outlook[data[1]], temp[data[2]], humidity[data[3]], wind[data[4]]]])[0]
+    
+    if probability[0] > probability[1]:
+        data[5] = "Yes"
+        probability = probability[0]
+    else:
+        data[5] = "No"
+        probability = probability[1]
+    
+    if(probability >= 0.75):
+        print(str(data[0]).ljust(15) + str(data[1]).ljust(15) + str(data[2]).ljust(15) + str(data[3]).ljust(15) + str(data[4]).ljust(15) + str(data[5]).ljust(15) + str(probability).ljust(15))
