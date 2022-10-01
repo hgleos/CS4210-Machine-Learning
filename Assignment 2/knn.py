@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------
 # AUTHOR: Hugo Leos
-# FILENAME: title of the source file
+# FILENAME: knn.py
 # SPECIFICATION: finding the error rate using 1NN
 # FOR: CS 4210- Assignment #2
 # TIME SPENT: 5-6 hours
