@@ -19,6 +19,7 @@ for ds in dataSets:
     dbTraining = []
     X = []
     Y = []
+    lowestAccuracy = 1
 
     #reading the training data in a csv file
     with open(ds, 'r') as csvfile:
@@ -45,7 +46,6 @@ for ds in dataSets:
         X.append([age[data[0]], spectacle[data[1]], astigmatism[data[2]], tear[data[3]]])
         Y.append(lenses[data[4]])
 
-    lowestAccuracy = 8
     #loop your training and test tasks 10 times here
     for i in range (10):
 
@@ -83,7 +83,7 @@ for ds in dataSets:
             
         #find the lowest accuracy of this model during the 10 runs (training and test set)
         #--> add your Python code here
-        if(rightCount < lowestAccuracy):
+        if(rightCount/len(dbTest) < lowestAccuracy):
             lowestAccuracy = rightCount
 
     #print the lowest accuracy of this model during the 10 runs (training and test set).
