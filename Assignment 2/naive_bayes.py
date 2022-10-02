@@ -75,4 +75,4 @@ for data in testSet:
         probability = probability[1]
     
     if(probability >= 0.75):
-        print(str(data[0]).ljust(15) + str(data[1]).ljust(15) + str(data[2]).ljust(15) + str(data[3]).ljust(15) + str(data[4]).ljust(15) + str(data[5]).ljust(15) + str(probability).ljust(15))
+        print(str(data[0]).ljust(15) + str(data[1]).ljust(15) + str(data[2]).ljust(15) + str(data[3]).ljust(15) + str(data[4]).ljust(15) + str(data[5]).ljust(15) + str(round(probability, 2)).ljust(15))
