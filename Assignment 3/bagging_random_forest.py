@@ -29,8 +29,6 @@ with open('optdigits.tra', 'r') as csvfile:
    for i, row in enumerate(reader):
       dbTraining.append(row)
 
-# print(dbTraining[0][63])
-
 
 #reading the test data from a csv file and populate dbTest
 #--> add your Python code here
@@ -38,8 +36,6 @@ with open('optdigits.tes', 'r') as csvfile:
    reader = csv.reader(csvfile)
    for i, row in enumerate(reader):
       dbTest.append(row)
-
-# print(dbTest)
 
 
 #inititalizing the class votes for each test sample. Example: classVotes.append([0,0,0,0,0,0,0,0,0,0])
@@ -51,7 +47,8 @@ for i in range(10):
 
 print("Started my base and ensemble classifier ...")
 
-for k in range(1): #we will create 20 bootstrap samples here (k = 20). One classifier will be created for each bootstrap sample
+correct_ens = 0
+for k in range(20): #we will create 20 bootstrap samples here (k = 20). One classifier will be created for each bootstrap sample
 
   bootstrapSample = resample(dbTraining, n_samples=len(dbTraining), replace=True)
   
@@ -60,15 +57,13 @@ for k in range(1): #we will create 20 bootstrap samples here (k = 20). One class
   for sample in bootstrapSample:
      X_training.append(sample[:-1])
      y_training.append(sample[-1])
-  
-# print("This is X Training: ", X_training)
-# print("This is Y Training: ", y_training)
-
+          
 
 #   fitting the decision tree to the data
   clf = tree.DecisionTreeClassifier(criterion = 'entropy', max_depth=None) #we will use a single decision tree without pruning it
   clf = clf.fit(X_training, y_training)
 
+  correct_0 = 0
   for i, testSample in enumerate(dbTest):
 
       #make the classifier prediction for each test sample and update the corresponding index value in classVotes. For instance,
@@ -77,24 +72,31 @@ for k in range(1): #we will create 20 bootstrap samples here (k = 20). One class
       # Later, if your third base classifier predicted 3 for the first test sample, then classVotes[0,0,1,1,0,0,0,0,0,0] will change to classVotes[0,0,1,2,0,0,0,0,0,0]
       # this array will consolidate the votes of all classifier for all test samples
       #--> add your Python code here
-      print(testSample)
-      prediction = clf.predict(testSample)
+      prediction = clf.predict([testSample[:64]]) 
+      classVotes[int(prediction[0])] += 1 
 
-      # print(prediction)
+      if k == 0: #for only the first base classifier, compare the prediction with the true label of the test sample here to start calculating its accuracy
+         #--> add your Python code here
+         if prediction[0] == testSample[-1]:
+            correct_0 += 1
 
-      # if k == 0: #for only the first base classifier, compare the prediction with the true label of the test sample here to start calculating its accuracy
-      #    #--> add your Python code here
+  if k == 0: #for only the first base classifier, print its accuracy here
+     #--> add your Python code here
+     accuracy = correct_0/len(dbTest)
+     print("Finished my base classifier (fast but relatively low accuracy) ...")
+     print("My base classifier accuracy: " + str(accuracy))
+     print("")
 
-#   if k == 0: #for only the first base classifier, print its accuracy here
-#      #--> add your Python code here
-#      print("Finished my base classifier (fast but relatively low accuracy) ...")
-#      print("My base classifier accuracy: " + str(accuracy))
-#      print("")
-
-#   #now, compare the final ensemble prediction (majority vote in classVotes) for each test sample with the ground truth label to calculate the accuracy of the ensemble classifier (all base classifiers together)
-#   #--> add your Python code here
-
-#   #printing the ensemble accuracy here
+  print(prediction) 
+  #now, compare the final ensemble prediction (majority vote in classVotes) for each test sample with the ground truth label to calculate the accuracy of the ensemble classifier (all base classifiers together)
+  #--> add your Python code here
+#   print(classVotes)
+#   print(max(classVotes))
+#   majorityVote = classVotes.index(max(classVotes))
+#   print(majorityVote)
+#   print(prediction[k])
+  
+  #printing the ensemble accuracy here
 #   print("Finished my ensemble classifier (slow but higher accuracy) ...")
 #   print("My ensemble accuracy: " + str(accuracy))
 #   print("")
