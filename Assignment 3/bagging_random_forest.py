@@ -91,13 +91,9 @@ correct = 0
 #now, compare the final ensemble prediction (majority vote in classVotes) for each test sample with the ground truth label to calculate the accuracy of the ensemble classifier (all base classifiers together)
 #--> add your Python code here
 for i, votes in enumerate(classVotes):
-   # print(votes)
    max_index = votes.index(max(votes))
-   # print(max_index)
-   # print("This is the truth:", dbTest[i][-1])
    if int(max_index) == int(dbTest[i][-1]):
       correct += 1
-      # print("Total correct now:", correct)
 
 # printing the ensemble accuracy here
 accuracy = correct/len(dbTest)
@@ -113,13 +109,18 @@ clf=RandomForestClassifier(n_estimators=20) #this is the number of decision tree
 #Fit Random Forest to the training data
 clf.fit(X_training,y_training)
 
+
+correct = 0
 #make the Random Forest prediction for each test sample. Example: class_predicted_rf = clf.predict([[3, 1, 2, 1, ...]]
-#--> add your Python code here
-prediction_rf = clf.predict(dbTest[i][:64])
-
-#compare the Random Forest prediction for each test sample with the ground truth label to calculate its accuracy
-#--> add your Python code here
-
+#--> add your Python code here   
+for i, testSample in enumerate(dbTest):
+   prediction_rf = clf.predict([testSample[:64]])
+   #compare the Random Forest prediction for each test sample with the ground truth label to calculate its accuracy
+   #--> add your Python code here
+   if int(prediction_rf) == int(testSample[-1]):
+      correct += 1
+      
+accuracy = correct/len(dbTest)
 #printing Random Forest accuracy here
 print("Random Forest accuracy: " + str(accuracy))
 
