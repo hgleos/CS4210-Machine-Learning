@@ -1,9 +1,9 @@
 #-------------------------------------------------------------------------
-# AUTHOR: your name
-# FILENAME: title of the source file
-# SPECIFICATION: description of the program
+# AUTHOR: Hugo Leos
+# FILENAME: bagging_random_forest.py
+# SPECIFICATION: comparing decision tree (k=0), ensemble (bagging) and random forest
 # FOR: CS 4210- Assignment #3
-# TIME SPENT: how long it took you to complete the assignment
+# TIME SPENT: approximately 8-10 hours
 #-----------------------------------------------------------*/
 
 #IMPORTANT NOTE: DO NOT USE ANY ADVANCED PYTHON LIBRARY TO COMPLETE THIS CODE SUCH AS numpy OR pandas. You have to work here only with standard vectors and arrays
